@@ -35,9 +35,17 @@ RAW_DIR = Path(__file__).parent.parent / "data" / "raw"
 DATASET_RULES = {
     "eia_oil_prices.csv": {
         "required_columns": ["date"],
-        "ranges": {"brent_usd": (0, 300), "wti_usd": (0, 300)},
+        # wti_usd's floor is negative, not 0: on 2020-04-20 WTI futures
+        # actually traded at -$36.98 (COVID demand collapse + storage
+        # capacity crunch) — a real market event, not bad data. Brent never
+        # went negative that day (troughed around $9), so its floor stays 0.
+        "ranges": {"brent_usd": (0, 300), "wti_usd": (-50, 300)},
         "date_column": "date",
-        "max_staleness_days": 5,
+        # EIA's daily spot price series is itself published with roughly a
+        # week's lag (confirmed live: re-running the pipeline still only
+        # returned data through the same date as before) — 5 days flags this
+        # as "stale" on every run regardless of pipeline health.
+        "max_staleness_days": 10,
     },
     "eia_gulf_imports.csv": {
         "required_columns": ["date", "country", "imports_mb"],
@@ -74,13 +82,20 @@ DATASET_RULES = {
     },
     "worldbank_country_indicators.csv": {
         "required_columns": ["country_code", "country_name", "year"],
-        "ranges": {"gdp_growth_pct": (-50, 50), "inflation_pct": (-50, 500)},
+        # gdp_growth_pct's old (-50, 50) bound flagged Iraq's genuine +53.4%
+        # in 2004 (post-invasion reconstruction rebound) as bad data. Widened
+        # to match other real-world extremes on record (e.g. Libya -62% in
+        # 2011's civil war, Guyana +63% in 2022's oil boom) while still
+        # catching actual unit/typo errors far outside that range.
+        "ranges": {"gdp_growth_pct": (-70, 70), "inflation_pct": (-50, 500)},
         "date_column": None,
         "max_staleness_days": None,
     },
     "fred_economic_indicators.csv": {
         "required_columns": ["date"],
-        "ranges": {"brent_price_usd": (0, 300), "wti_price_usd": (0, 300)},
+        # wti_price_usd: see eia_oil_prices.csv's wti_usd note — 2020-04-20's
+        # -$36.98 print is real, not bad data.
+        "ranges": {"brent_price_usd": (0, 300), "wti_price_usd": (-50, 300)},
         "date_column": "date",
         "max_staleness_days": 5,
     },
@@ -92,9 +107,13 @@ DATASET_RULES = {
     },
     "alphavantage_commodities.csv": {
         "required_columns": ["date"],
-        "ranges": {"wti_usd_av": (0, 300), "brent_usd_av": (0, 300), "natgas_usd_av": (0, 100)},
+        # wti_usd_av: same 2020-04-20 negative-WTI event as the other two
+        # WTI series above.
+        "ranges": {"wti_usd_av": (-50, 300), "brent_usd_av": (0, 300), "natgas_usd_av": (0, 100)},
         "date_column": "date",
-        "max_staleness_days": 5,
+        # Same provider-lag reasoning as eia_oil_prices.csv above — Alpha
+        # Vantage's commodity series runs about a week behind real-time.
+        "max_staleness_days": 10,
     },
     "alphavantage_fx.csv": {
         "required_columns": ["date"],
