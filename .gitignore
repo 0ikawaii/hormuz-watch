@@ -3,6 +3,7 @@ __pycache__/
 **/__pycache__/
 *.pyc
 .env
+.streamlit/secrets.toml
 
 # Local-only state — not shared across machines
 mlflow/
