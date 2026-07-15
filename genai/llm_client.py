@@ -35,6 +35,20 @@ from loguru import logger
 
 load_dotenv()
 
+if not os.getenv("GEMINI_API_KEY"):
+    # Streamlit Community Cloud's Secrets panel is TOML, not a .env file —
+    # load_dotenv() above never sees it. Streamlit is documented to mirror
+    # top-level secrets into os.environ automatically, but that's timing-
+    # dependent on when st.secrets first gets touched, and lru_cache below
+    # would freeze a premature "not configured" for the rest of the process.
+    # Read st.secrets directly here instead of relying on that side effect.
+    try:
+        import streamlit as st
+        if "GEMINI_API_KEY" in st.secrets:
+            os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+    except Exception:
+        pass  # not running inside Streamlit, or no secrets configured — fine, is_configured() will just be False
+
 EMBEDDING_MODEL = "gemini-embedding-001"
 GENERATION_MODEL = "gemini-flash-lite-latest"
 
