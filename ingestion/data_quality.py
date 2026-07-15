@@ -51,14 +51,20 @@ DATASET_RULES = {
         "required_columns": ["date", "country", "imports_mb"],
         "ranges": {"imports_mb": (0, None)},
         "date_column": "date",
-        "max_staleness_days": 60,
+        # Customs/trade-compiled import statistics publish with a much
+        # longer lag than spot prices — confirmed live: latest available
+        # data is consistently ~3+ months behind today, not ~2 months.
+        "max_staleness_days": 120,
         "optional": True,
     },
     "eia_natgas_prices.csv": {
         "required_columns": ["date", "natgas_usd_mmbtu"],
         "ranges": {"natgas_usd_mmbtu": (0, 100)},
         "date_column": "date",
-        "max_staleness_days": 5,
+        # EIA retired daily granularity for this series (see
+        # eia_collector.py's fetch_natural_gas_prices) — it's monthly now,
+        # so a full reporting month's lag is normal, not stale.
+        "max_staleness_days": 45,
         "optional": True,
     },
     "gdelt_daily_risk_timeline.csv": {

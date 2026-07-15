@@ -1,8 +1,8 @@
 {
-  "run_id": "20260715T150028Z",
-  "generated_at": "2026-07-15T15:00:28.704595+00:00",
-  "total_checks": 48,
-  "passed": 48,
+  "run_id": "20260715T153454Z",
+  "generated_at": "2026-07-15T15:34:54.902710+00:00",
+  "total_checks": 56,
+  "passed": 56,
   "failed": 0,
   "failures": [],
   "checks": [
@@ -44,15 +44,63 @@
     },
     {
       "dataset": "eia_gulf_imports.csv",
-      "check": "file_exists_optional",
+      "check": "non_empty",
       "passed": true,
-      "detail": "not fetched this run (best-effort dataset \u2014 expected to be absent sometimes)"
+      "detail": "319 rows"
+    },
+    {
+      "dataset": "eia_gulf_imports.csv",
+      "check": "schema_required_columns",
+      "passed": true,
+      "detail": "all present"
+    },
+    {
+      "dataset": "eia_gulf_imports.csv",
+      "check": "range_imports_mb",
+      "passed": true,
+      "detail": "within range"
+    },
+    {
+      "dataset": "eia_gulf_imports.csv",
+      "check": "freshness",
+      "passed": true,
+      "detail": "latest=2026-04-01, 105d old (max 120d)"
+    },
+    {
+      "dataset": "eia_gulf_imports.csv",
+      "check": "no_future_dates",
+      "passed": true,
+      "detail": "ok"
     },
     {
       "dataset": "eia_natgas_prices.csv",
-      "check": "file_exists_optional",
+      "check": "non_empty",
       "passed": true,
-      "detail": "not fetched this run (best-effort dataset \u2014 expected to be absent sometimes)"
+      "detail": "24 rows"
+    },
+    {
+      "dataset": "eia_natgas_prices.csv",
+      "check": "schema_required_columns",
+      "passed": true,
+      "detail": "all present"
+    },
+    {
+      "dataset": "eia_natgas_prices.csv",
+      "check": "range_natgas_usd_mmbtu",
+      "passed": true,
+      "detail": "within range"
+    },
+    {
+      "dataset": "eia_natgas_prices.csv",
+      "check": "freshness",
+      "passed": true,
+      "detail": "latest=2026-06-01, 44d old (max 45d)"
+    },
+    {
+      "dataset": "eia_natgas_prices.csv",
+      "check": "no_future_dates",
+      "passed": true,
+      "detail": "ok"
     },
     {
       "dataset": "gdelt_daily_risk_timeline.csv",

@@ -131,6 +131,14 @@ class EIACollector(BaseCollector):
     # Useful for tracking Gulf state export changes
     # ------------------------------------------------------------------
 
+    # ISO-3166 alpha-3-ish codes EIA's impcus/data 'area-name' field uses for
+    # these countries as of the current API schema (verified live against
+    # facets[product][]=EPC0 responses — see fetch_us_imports_by_country).
+    GULF_COUNTRY_CODES = {
+        "SAU": "Saudi Arabia", "IRQ": "Iraq", "KWT": "Kuwait", "ARE": "United Arab Emirates",
+        "QAT": "Qatar", "IRN": "Iran", "BHR": "Bahrain", "OMN": "Oman",
+    }
+
     def fetch_us_imports_by_country(self) -> pd.DataFrame:
         """
         Fetch U.S. crude oil imports by country of origin (monthly).
@@ -143,10 +151,13 @@ class EIACollector(BaseCollector):
             "api_key":   self.api_key,
             "frequency": "monthly",
             "data[0]":   "value",
+            # Without this facet the route returns every petroleum product
+            # (asphalt, road oil, etc.), not just crude oil.
+            "facets[product][]": "EPC0",
             "sort[0][column]":    "period",
             "sort[0][direction]": "desc",
             "offset": 0,
-            "length": 2000,
+            "length": 5000,
         }
         data = self.fetch(url, params=params)
         if not data or "response" not in data:
@@ -158,31 +169,27 @@ class EIACollector(BaseCollector):
         if df.empty:
             return df
 
-        logger.debug(f"[EIA] Gulf imports — available columns: {df.columns.tolist()}")
-
-        # The EIA v2 API sometimes names the origin-country column differently
-        # depending on the dataset (e.g. 'originName', 'origin-name', 'origin').
-        candidates = [c for c in df.columns if "origin" in c.lower()]
-        if not candidates:
-            logger.warning("[EIA] Could not find an origin-country column in "
-                           f"the response (columns: {df.columns.tolist()}). "
-                           "Skipping Gulf imports — this is optional data.")
+        if "area-name" not in df.columns:
+            logger.warning("[EIA] Expected an 'area-name' column in the response "
+                           f"(columns: {df.columns.tolist()}). EIA's schema may have "
+                           "changed again — skipping Gulf imports, this is optional data.")
             return pd.DataFrame()
 
-        origin_col = candidates[0]
+        # Each duoarea/product/period combination appears twice — once as a
+        # monthly total (units='MBBL') and once as a daily rate
+        # (units='MBBL/D'). Keep only the total to match imports_mb's meaning.
+        df = df[df["units"] == "MBBL"]
 
-        df = df[["period", origin_col, "value"]].rename(columns={
-            "period":   "date",
-            origin_col: "country",
-            "value":    "imports_mb",
+        df = df[["period", "area-name", "value"]].rename(columns={
+            "period":     "date",
+            "area-name":  "country",
+            "value":      "imports_mb",
         })
         df["imports_mb"] = pd.to_numeric(df["imports_mb"], errors="coerce")
         df["date"] = pd.to_datetime(df["date"])
 
-        # Filter for Gulf states
-        gulf_countries = ["Saudi Arabia", "Iraq", "Kuwait", "United Arab Emirates",
-                          "Qatar", "Iran", "Bahrain", "Oman"]
-        gulf_df = df[df["country"].isin(gulf_countries)].copy()
+        gulf_df = df[df["country"].isin(self.GULF_COUNTRY_CODES)].copy()
+        gulf_df["country"] = gulf_df["country"].map(self.GULF_COUNTRY_CODES)
 
         if gulf_df.empty:
             logger.warning(f"[EIA] No Gulf state matches found. Sample countries in data: "
@@ -199,16 +206,24 @@ class EIACollector(BaseCollector):
     def fetch_natural_gas_prices(self, days_back: int = 365) -> pd.DataFrame:
         """
         Fetch Henry Hub natural gas spot prices.
+
+        EIA retired daily granularity for this series at some point after
+        this collector was first written (confirmed live: the route now
+        rejects frequency='daily' outright — "the only valid frequencies are
+        'monthly' and 'annual'"). The series (RNGWHHD) is still live, and it
+        actually lives under natural-gas/pri/fut/ (Spot and Futures Prices),
+        not natural-gas/pri/sum/ (Natural Gas Prices) — the original URL was
+        pointed at the wrong route even before the frequency change.
         """
         logger.info("[EIA] Fetching natural gas prices...")
 
-        start = (datetime.today() - timedelta(days=days_back)).strftime("%Y-%m-%d")
-        end   = datetime.today().strftime("%Y-%m-%d")
+        start = (datetime.today() - timedelta(days=days_back)).strftime("%Y-%m")
+        end   = datetime.today().strftime("%Y-%m")
 
-        url = f"{self.BASE_URL}/natural-gas/pri/sum/data/"
+        url = f"{self.BASE_URL}/natural-gas/pri/fut/data/"
         params = {
             "api_key":    self.api_key,
-            "frequency":  "daily",
+            "frequency":  "monthly",
             "data[0]":    "value",
             "facets[series][]": "RNGWHHD",
             "start":      start,
