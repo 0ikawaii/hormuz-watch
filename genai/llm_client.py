@@ -35,6 +35,12 @@ from loguru import logger
 
 load_dotenv()
 
+# Diagnostics for the dashboard's "not configured" notice (see
+# dashboard/app.py's Ask HormuzWatch page) — records *why* the key wasn't
+# picked up, rather than silently swallowing it, since that swallowing is
+# exactly what made the last attempt at this un-debuggable from outside.
+SECRETS_LOOKUP_DETAIL = "GEMINI_API_KEY found via os.getenv() / .env"
+
 if not os.getenv("GEMINI_API_KEY"):
     # Streamlit Community Cloud's Secrets panel is TOML, not a .env file —
     # load_dotenv() above never sees it. Streamlit is documented to mirror
@@ -46,8 +52,15 @@ if not os.getenv("GEMINI_API_KEY"):
         import streamlit as st
         if "GEMINI_API_KEY" in st.secrets:
             os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
-    except Exception:
-        pass  # not running inside Streamlit, or no secrets configured — fine, is_configured() will just be False
+            SECRETS_LOOKUP_DETAIL = "GEMINI_API_KEY found via st.secrets"
+        else:
+            SECRETS_LOOKUP_DETAIL = (
+                f"st.secrets loaded but has no GEMINI_API_KEY key "
+                f"(keys present: {list(st.secrets.keys())})"
+            )
+    except Exception as e:
+        SECRETS_LOOKUP_DETAIL = f"st.secrets access failed: {type(e).__name__}: {e}"
+    logger.warning(f"[LLM] {SECRETS_LOOKUP_DETAIL}")
 
 EMBEDDING_MODEL = "gemini-embedding-001"
 GENERATION_MODEL = "gemini-flash-lite-latest"

@@ -941,12 +941,14 @@ elif page == "🤖 Ask HormuzWatch":
                "GDELT events, news articles, risk index history, and model results, with citations.")
 
     from llm_client import is_configured as llm_is_configured
+    from llm_client import SECRETS_LOOKUP_DETAIL as llm_secrets_detail
 
     if not llm_is_configured():
         no_data_notice(
             "the Ask HormuzWatch assistant",
             "Add `GEMINI_API_KEY` to your `.env` file (free tier: https://aistudio.google.com/apikey).",
         )
+        st.caption(f"Diagnostic: {llm_secrets_detail}")
         st.stop()
 
     if "chat_history" not in st.session_state:
