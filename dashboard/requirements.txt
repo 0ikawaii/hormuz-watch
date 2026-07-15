@@ -4,14 +4,21 @@
 # dashboard never imports and which would blow the free-tier build budget.
 # Streamlit Cloud reads the requirements.txt in the same folder as the
 # app entry point, so this file (not the root one) governs this deploy.
+#
+# Lower-bound (not exact) pins on purpose: Streamlit Cloud's build image
+# runs whatever current Python it wants (observed Python 3.14 in the build
+# log), and exact 2023-era pins (streamlit==1.29.0, pandas==2.1.4, ...) have
+# no prebuilt wheels for it, forcing a from-source build that fails (missing
+# zlib headers for pillow, Cython/CPython-internals mismatch for pandas).
+# Lower bounds let uv resolve to whatever current release has wheels ready.
 
-streamlit==1.29.0
-pandas==2.1.4
-numpy==1.26.2
-plotly==5.18.0
+streamlit>=1.40
+pandas>=2.2
+numpy>=1.26
+plotly>=5.20
 
 # Powers the "Ask HormuzWatch" RAG page (genai/rag.py, llm_client.py, corpus.py)
 google-genai>=1.0.0
 pydantic>=2.0.0
-python-dotenv==1.0.0
-loguru==0.7.2
+python-dotenv>=1.0.0
+loguru>=0.7.2
