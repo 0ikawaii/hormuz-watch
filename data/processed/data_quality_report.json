@@ -1,45 +1,15 @@
 {
-  "run_id": "20260714T154719Z",
-  "generated_at": "2026-07-14T15:47:19.642795+00:00",
+  "run_id": "20260715T133327Z",
+  "generated_at": "2026-07-15T13:33:27.100066+00:00",
   "total_checks": 48,
-  "passed": 37,
-  "failed": 11,
+  "passed": 43,
+  "failed": 5,
   "failures": [
     {
       "dataset": "eia_oil_prices.csv",
       "check": "freshness",
       "passed": false,
-      "detail": "latest=2026-07-06, 8d old (max 5d)"
-    },
-    {
-      "dataset": "eia_gulf_imports.csv",
-      "check": "file_exists",
-      "passed": false,
-      "detail": "file not found"
-    },
-    {
-      "dataset": "eia_natgas_prices.csv",
-      "check": "file_exists",
-      "passed": false,
-      "detail": "file not found"
-    },
-    {
-      "dataset": "gdelt_daily_risk_timeline.csv",
-      "check": "freshness",
-      "passed": false,
-      "detail": "latest=2026-06-12, 32d old (max 3d)"
-    },
-    {
-      "dataset": "gdelt_hormuz_events.csv",
-      "check": "freshness",
-      "passed": false,
-      "detail": "latest=2026-06-12, 32d old (max 3d)"
-    },
-    {
-      "dataset": "gdelt_hormuz_news.csv",
-      "check": "file_exists",
-      "passed": false,
-      "detail": "file not found"
+      "detail": "latest=2026-07-06, 9d old (max 5d)"
     },
     {
       "dataset": "worldbank_country_indicators.csv",
@@ -54,12 +24,6 @@
       "detail": "1 values outside [0, 300]"
     },
     {
-      "dataset": "fred_economic_indicators.csv",
-      "check": "freshness",
-      "passed": false,
-      "detail": "latest=2026-06-11, 33d old (max 5d)"
-    },
-    {
       "dataset": "alphavantage_commodities.csv",
       "check": "range_wti_usd_av",
       "passed": false,
@@ -69,7 +33,7 @@
       "dataset": "alphavantage_commodities.csv",
       "check": "freshness",
       "passed": false,
-      "detail": "latest=2026-07-06, 8d old (max 5d)"
+      "detail": "latest=2026-07-06, 9d old (max 5d)"
     }
   ],
   "checks": [
@@ -101,7 +65,7 @@
       "dataset": "eia_oil_prices.csv",
       "check": "freshness",
       "passed": false,
-      "detail": "latest=2026-07-06, 8d old (max 5d)"
+      "detail": "latest=2026-07-06, 9d old (max 5d)"
     },
     {
       "dataset": "eia_oil_prices.csv",
@@ -111,15 +75,15 @@
     },
     {
       "dataset": "eia_gulf_imports.csv",
-      "check": "file_exists",
-      "passed": false,
-      "detail": "file not found"
+      "check": "file_exists_optional",
+      "passed": true,
+      "detail": "not fetched this run (best-effort dataset \u2014 expected to be absent sometimes)"
     },
     {
       "dataset": "eia_natgas_prices.csv",
-      "check": "file_exists",
-      "passed": false,
-      "detail": "file not found"
+      "check": "file_exists_optional",
+      "passed": true,
+      "detail": "not fetched this run (best-effort dataset \u2014 expected to be absent sometimes)"
     },
     {
       "dataset": "gdelt_daily_risk_timeline.csv",
@@ -154,8 +118,8 @@
     {
       "dataset": "gdelt_daily_risk_timeline.csv",
       "check": "freshness",
-      "passed": false,
-      "detail": "latest=2026-06-12, 32d old (max 3d)"
+      "passed": true,
+      "detail": "latest=2026-07-14, 1d old (max 3d)"
     },
     {
       "dataset": "gdelt_daily_risk_timeline.csv",
@@ -184,8 +148,8 @@
     {
       "dataset": "gdelt_hormuz_events.csv",
       "check": "freshness",
-      "passed": false,
-      "detail": "latest=2026-06-12, 32d old (max 3d)"
+      "passed": true,
+      "detail": "latest=2026-07-13, 2d old (max 3d)"
     },
     {
       "dataset": "gdelt_hormuz_events.csv",
@@ -195,15 +159,15 @@
     },
     {
       "dataset": "gdelt_hormuz_news.csv",
-      "check": "file_exists",
-      "passed": false,
-      "detail": "file not found"
+      "check": "file_exists_optional",
+      "passed": true,
+      "detail": "not fetched this run (best-effort dataset \u2014 expected to be absent sometimes)"
     },
     {
       "dataset": "worldbank_country_indicators.csv",
       "check": "non_empty",
       "passed": true,
-      "detail": "486 rows"
+      "detail": "504 rows"
     },
     {
       "dataset": "worldbank_country_indicators.csv",
@@ -227,7 +191,7 @@
       "dataset": "fred_economic_indicators.csv",
       "check": "non_empty",
       "passed": true,
-      "detail": "4180 rows"
+      "detail": "4212 rows"
     },
     {
       "dataset": "fred_economic_indicators.csv",
@@ -250,8 +214,8 @@
     {
       "dataset": "fred_economic_indicators.csv",
       "check": "freshness",
-      "passed": false,
-      "detail": "latest=2026-06-11, 33d old (max 5d)"
+      "passed": true,
+      "detail": "latest=2026-07-13, 2d old (max 5d)"
     },
     {
       "dataset": "fred_economic_indicators.csv",
@@ -275,7 +239,7 @@
       "dataset": "newsapi_hormuz_articles.csv",
       "check": "freshness",
       "passed": true,
-      "detail": "latest=2026-07-13, 1d old (max 3d)"
+      "detail": "latest=2026-07-13, 2d old (max 3d)"
     },
     {
       "dataset": "newsapi_hormuz_articles.csv",
@@ -317,7 +281,7 @@
       "dataset": "alphavantage_commodities.csv",
       "check": "freshness",
       "passed": false,
-      "detail": "latest=2026-07-06, 8d old (max 5d)"
+      "detail": "latest=2026-07-06, 9d old (max 5d)"
     },
     {
       "dataset": "alphavantage_commodities.csv",
@@ -353,7 +317,7 @@
       "dataset": "alphavantage_fx.csv",
       "check": "freshness",
       "passed": true,
-      "detail": "latest=2026-07-14, 0d old (max 5d)"
+      "detail": "latest=2026-07-14, 1d old (max 5d)"
     },
     {
       "dataset": "alphavantage_fx.csv",

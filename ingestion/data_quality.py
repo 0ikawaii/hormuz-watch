@@ -25,6 +25,13 @@ RAW_DIR = Path(__file__).parent.parent / "data" / "raw"
 # Per-dataset expectations, keyed by filename. A dataset with no entry here
 # still gets the universal non-empty check, just no schema/range/freshness
 # checks. (lo, hi) of None means "no lower/upper bound".
+#
+# "optional": True marks datasets the corresponding collector treats as
+# best-effort (wrapped in a non-fatal try/except, or dependent on a
+# frequently-rate-limited endpoint — see eia_collector.py's Gulf imports/
+# natgas fetches and gdelt_collector.py's fetch_hormuz_news). A missing
+# optional dataset is expected pipeline behavior, not a data quality
+# failure, so it's reported separately rather than as file_exists: FAIL.
 DATASET_RULES = {
     "eia_oil_prices.csv": {
         "required_columns": ["date"],
@@ -37,12 +44,14 @@ DATASET_RULES = {
         "ranges": {"imports_mb": (0, None)},
         "date_column": "date",
         "max_staleness_days": 60,
+        "optional": True,
     },
     "eia_natgas_prices.csv": {
         "required_columns": ["date", "natgas_usd_mmbtu"],
         "ranges": {"natgas_usd_mmbtu": (0, 100)},
         "date_column": "date",
         "max_staleness_days": 5,
+        "optional": True,
     },
     "gdelt_daily_risk_timeline.csv": {
         "required_columns": ["date", "article_count", "avg_tone", "risk_signal"],
@@ -61,6 +70,7 @@ DATASET_RULES = {
         "ranges": {},
         "date_column": "date",
         "max_staleness_days": 14,
+        "optional": True,
     },
     "worldbank_country_indicators.csv": {
         "required_columns": ["country_code", "country_name", "year"],
@@ -195,10 +205,14 @@ def validate(df: pd.DataFrame, filename: str, report: DataQualityReport = None) 
 def validate_raw_dir() -> DataQualityReport:
     """Standalone entry point: re-validate every known dataset currently in data/raw/."""
     report = DataQualityReport(run_id=datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
-    for filename in DATASET_RULES:
+    for filename, rules in DATASET_RULES.items():
         path = RAW_DIR / filename
         if not path.exists():
-            report.add(filename, "file_exists", False, "file not found")
+            if rules.get("optional"):
+                report.add(filename, "file_exists_optional", True,
+                            "not fetched this run (best-effort dataset — expected to be absent sometimes)")
+            else:
+                report.add(filename, "file_exists", False, "file not found")
             continue
         df = pd.read_csv(path)
         validate(df, filename, report=report)

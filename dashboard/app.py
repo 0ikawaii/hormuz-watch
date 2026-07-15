@@ -149,6 +149,13 @@ LINEAGE_DATASETS = [
     "newsapi_hormuz_articles.csv", "alphavantage_commodities.csv", "alphavantage_fx.csv",
 ]
 
+# Collectors treat these as best-effort (non-fatal try/except around a
+# frequently-rate-limited endpoint — see eia_collector.py's Gulf imports/
+# natgas fetches and gdelt_collector.py's fetch_hormuz_news). A missing file
+# here is expected pipeline behavior, not a broken dataset, so it's surfaced
+# separately from real gaps in the lineage panel below.
+OPTIONAL_LINEAGE_DATASETS = {"eia_gulf_imports.csv", "eia_natgas_prices.csv", "gdelt_hormuz_news.csv"}
+
 @st.cache_data(ttl=1800)
 def load_lineage_summary():
     """Per raw dataset: row count, latest source/run_id/fetched_at, staleness — computed
@@ -158,7 +165,10 @@ def load_lineage_summary():
     for filename in LINEAGE_DATASETS:
         p = DATA_DIR / filename
         if not p.exists():
-            rows.append({"dataset": filename, "status": "missing"})
+            if filename in OPTIONAL_LINEAGE_DATASETS:
+                rows.append({"dataset": filename, "status": "optional — not fetched this run"})
+            else:
+                rows.append({"dataset": filename, "status": "missing"})
             continue
         df = pd.read_csv(p)
         if "_run_id" not in df.columns:
@@ -1008,9 +1018,19 @@ elif page == "🔍 Data Lineage":
     else:
         st.info("No lineage-stamped datasets found yet — run `python ingestion/run_pipeline.py`.")
 
-    if other_rows:
-        with st.expander(f"{len(other_rows)} dataset(s) missing or without lineage columns"):
-            for r in other_rows:
+    optional_absent = [r for r in other_rows if r["dataset"] in OPTIONAL_LINEAGE_DATASETS]
+    real_gaps = [r for r in other_rows if r["dataset"] not in OPTIONAL_LINEAGE_DATASETS]
+
+    if real_gaps:
+        with st.expander(f"⚠️ {len(real_gaps)} dataset(s) missing or without lineage columns", expanded=True):
+            for r in real_gaps:
+                st.write(f"- **{r['dataset']}**: {r['status']}")
+
+    if optional_absent:
+        with st.expander(f"{len(optional_absent)} optional dataset(s) not fetched this run"):
+            st.caption("These sources are best-effort (rate-limited APIs or non-critical "
+                       "supplements) — the pipeline runs fine without them.")
+            for r in optional_absent:
                 st.write(f"- **{r['dataset']}**: {r['status']}")
 
     st.divider()
