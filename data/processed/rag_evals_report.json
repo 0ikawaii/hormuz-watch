@@ -1,0 +1,227 @@
+{
+  "n_questions": 20,
+  "retrieval_precision_rate": 1.0,
+  "faithfulness_rate": 1.0,
+  "results": [
+    {
+      "id": "def_hri",
+      "category": "definitional",
+      "question": "What is the Hormuz Risk Index and what does it measure?",
+      "answer": "The Hormuz Risk Index (HRI) is a composite score ranging from 0 to 100 that represents the current risk of disruption to the Strait of Hormuz [1].\n\nIt is calculated by combining four weighted signals:\n*   **News Volume (35%):** The z-score of the daily article count compared to a 30-day baseline [1].\n*   **News Tone (25%):** Based on GDELT's tone score, where a negative tone indicates higher risk [1].\n*   **Price Volatility (25%):** The percentile rank of 7-day rolling Brent return volatility [1].\n*   **Price Deviation (15%):** The percentage deviation of the Brent price from its 90-day moving average [1].\n\nThe index categorizes risk into five levels: Low (0-20), Moderate (20-40), Elevated (40-60), High (60-75), and Critical (75-100) [1].\n\nSources:\n[1]",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "All factual claims in the answer are directly supported by the provided context."
+    },
+    {
+      "id": "def_hri_news_weight",
+      "category": "definitional",
+      "question": "What weight does news volume have in the Hormuz Risk Index?",
+      "answer": "News volume accounts for 35% of the Hormuz Risk Index (HRI) score [1].\n\nSources:\n[1] HormuzWatch, n/a",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The context explicitly states that News Volume accounts for 35% of the HRI score."
+    },
+    {
+      "id": "def_hri_tone_weight",
+      "category": "definitional",
+      "question": "What weight does news tone have in the Hormuz Risk Index?",
+      "answer": "News tone accounts for 25% of the Hormuz Risk Index (HRI) score. It is defined as how hostile the GDELT tone score is, where a negative tone indicates high risk [1].\n\nSources:\n[1]",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reflects the weighting and definition of the News Tone component as described in the provided context."
+    },
+    {
+      "id": "def_hri_levels",
+      "category": "definitional",
+      "question": "What are the risk levels used by the Hormuz Risk Index and their score ranges?",
+      "answer": "The Hormuz Risk Index (HRI) categorizes risk into the following levels based on a 0-100 score:\n\n*   **Low:** 0-20\n*   **Moderate:** 20-40\n*   **Elevated:** 40-60\n*   **High:** 60-75\n*   **Critical:** 75-100\n\nSources: [1]",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reflects the risk level definitions provided in the context."
+    },
+    {
+      "id": "def_var",
+      "category": "definitional",
+      "question": "What does the VAR price impact model measure?",
+      "answer": "The VAR price impact model measures how the Hormuz Risk Index (HRI) and Brent crude returns influence one another over time [1]. Specifically, it produces the following outputs:\n\n*   **Impulse Response Function:** How Brent crude responds to a 1-unit shock in the HRI over a 10-day period [1].\n*   **Variance Decomposition:** The fraction of Brent's variance that is explained by HRI shocks versus its own momentum [1].\n*   **Forecasts:** A naive 7-day forecast of Brent returns [1].\n\nThe model is validated using an 80/20 chronological split against a \"tomorrow=today\" baseline, and it utilizes a Granger causality test to determine if the HRI provides predictive value for Brent returns beyond the influence of Brent's own past performance [1].\n\nSources:\n[1] HormuzWatch",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "All claims in the answer are directly supported by the provided context."
+    },
+    {
+      "id": "def_var_validation",
+      "category": "definitional",
+      "question": "How is the VAR model's performance validated?",
+      "answer": "The VAR model's performance is validated using an out-of-sample chronological split (80/20) against a naive \"tomorrow=today\" baseline [1]. The model's performance is measured by comparing its Root Mean Square Error (RMSE) against the RMSE of the naive baseline [2]. Additionally, a Granger causality test is performed to determine if the Hormuz Risk Index (HRI) provides predictive value for Brent returns beyond the information contained in Brent's own past returns [1].\n\nSources:\n[1] HormuzWatch\n[2] Price Model",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "All claims in the answer regarding the validation method, the use of RMSE for comparison, and the purpose of the Granger causality test are directly supported by the provided context."
+    },
+    {
+      "id": "def_granger",
+      "category": "definitional",
+      "question": "What does the Granger causality test check in this project?",
+      "answer": "The Granger causality test in this project checks whether the Hormuz Risk Index (HRI) actually helps predict Brent crude returns beyond the predictive power of Brent's own past returns [2].\n\nSources:\n[2] HormuzWatch",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reflects the context's description of the Granger causality test, and the inclusion of a source citation does not contradict the provided information."
+    },
+    {
+      "id": "def_xgboost",
+      "category": "definitional",
+      "question": "What machine learning model is used as a comparison to the VAR model?",
+      "answer": "An XGBoost regressor is used as a machine-learning comparison to the econometric VAR model [1]. It is trained on lagged HRI level/diff and Brent return features to predict next-day Brent returns [1].\n\nSources:\n[1] HormuzWatch",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reflects the information provided in the context regarding the use and training features of the XGBoost regressor."
+    },
+    {
+      "id": "def_choke_states",
+      "category": "definitional",
+      "question": "Which countries are the Strait of Hormuz choke-point states tracked by this project?",
+      "answer": "The Strait of Hormuz choke-point states tracked by HormuzWatch are Iran, the UAE, Oman, Saudi Arabia, Qatar, Kuwait, Iraq, and Bahrain [1].\n\nSources:\n[1] HormuzWatch, n/a",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The list of choke-point states provided in the answer matches the list explicitly stated in the provided context."
+    },
+    {
+      "id": "def_japan_dependency",
+      "category": "definitional",
+      "question": "Approximately what percentage of Japan's oil imports pass through the Strait of Hormuz?",
+      "answer": "Approximately 87% of Japan's oil imports pass through the Strait of Hormuz [1].\n\nSources:\n[1] HormuzWatch",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The context explicitly states that Japan imports approximately 87% of its oil via Hormuz, and the answer correctly attributes this information to the provided source."
+    },
+    {
+      "id": "def_china_dependency",
+      "category": "definitional",
+      "question": "Approximately what percentage of China's oil imports pass through the Strait of Hormuz?",
+      "answer": "Approximately 40% of China's oil imports pass through the Strait of Hormuz [1].\n\nSources:\n[1] HormuzWatch, n/a",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The context explicitly states that China has approximately 40% of its oil imports via Hormuz."
+    },
+    {
+      "id": "def_dependency_score",
+      "category": "definitional",
+      "question": "What factors make up the Hormuz Dependency Score for a country?",
+      "answer": "The Hormuz Dependency Score for a country is composed of three factors: energy import share, fuel import share, and current account vulnerability [1].\n\nSources:\n[1] HormuzWatch",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reflects the three components of the Hormuz Dependency Score as described in the provided text."
+    },
+    {
+      "id": "hist_fujairah",
+      "category": "historical",
+      "question": "What happened in the Fujairah tanker sabotage event?",
+      "answer": "In the Fujairah tanker sabotage event, which occurred on May 12, 2019, four tankers were sabotaged off the coast of Fujairah, UAE [1]. Following this event, the Hormuz Risk Index (HRI) did not rise above its pre-event 30-day baseline, recording a z-score of -0.91, while Brent crude moved 4.29% in the following days [1].\n\nSources:\n[1] Backtest, 2019-05-12",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "All factual claims in the answer are directly supported by the provided context regarding the Fujairah tanker sabotage event."
+    },
+    {
+      "id": "hist_stena",
+      "category": "historical",
+      "question": "What happened to the Stena Impero?",
+      "answer": "On July 19, 2019, Iran's IRGC seized the British-flagged tanker Stena Impero [1].\n\nSources:\n[1] Backtest (2019-07-19)",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reflects the information provided in the context regarding the date and details of the Stena Impero seizure."
+    },
+    {
+      "id": "hist_abqaiq",
+      "category": "historical",
+      "question": "What was the Abqaiq-Khurais attack and why is it significant?",
+      "answer": "The Abqaiq-Khurais attack was a drone and missile strike on Saudi Aramco facilities that occurred on September 14, 2019 [1]. \n\nIt is significant for the following reasons:\n* **Impact on global supply:** The attack knocked out approximately 5% of the global oil supply [1].\n* **Market volatility:** While the event did not take place inside the Strait of Hormuz, it serves as a useful volatility benchmark as the largest single Gulf-region shock of its era [1]. Following the attack, Brent crude moved 11.71% and the HRI rose above its pre-event 30-day baseline with a z-score of 0.51 [1].\n\nSources:\n[1] Backtest (2019-09-14)",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "All factual claims in the answer are directly supported by the provided context regarding the Abqaiq-Khurais attack."
+    },
+    {
+      "id": "hist_soleimani",
+      "category": "historical",
+      "question": "What happened after the Soleimani strike in January 2020?",
+      "answer": "Following the US strike that killed Qasem Soleimani on January 3, 2020, Iran retaliated with missile strikes on US bases in Iraq on January 8, 2020 [1]. In the days following the initial strike, the HRI rose above its pre-event 30-day baseline with a z-score of 5.29, and Brent crude moved 4.77% [1].\n\nSources:\n[1] Backtest, 2020-01-03",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "All factual claims in the answer are directly supported by the provided context regarding the 2020 event."
+    },
+    {
+      "id": "hist_houthi_caveat",
+      "category": "historical",
+      "question": "Is the 2024 Houthi Red Sea shipping attacks escalation considered a Strait of Hormuz event in this project?",
+      "answer": "No, the 2024 Houthi Red Sea shipping attacks escalation is not considered a Strait of Hormuz event in this project. While it was included in the backtest per the project brief, the documentation explicitly states that it occurred in the Bab-el-Mandeb and should be read as a distinct chokepoint event rather than a Hormuz disruption [1].\n\nSources:\n[1] Backtest, 2024-01-11",
+      "n_retrieved": 6,
+      "retrieval_precision": true,
+      "answer_keyword_match": true,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reflects the context's classification of the 2024 Houthi Red Sea attacks as a distinct chokepoint event separate from the Strait of Hormuz."
+    },
+    {
+      "id": "dyn_current_hri",
+      "category": "dynamic",
+      "question": "What is the most recent Hormuz Risk Index score and risk level?",
+      "answer": "The most recent Hormuz Risk Index score available in the provided documents is from the week of October 27, 2025, to November 2, 2025. During this period, the index averaged 45.2, which is classified as \"Elevated\" [5].\n\nSources:\n[5] Hormuz Risk Index, 2025-10-27/2025-11-02",
+      "n_retrieved": 6,
+      "retrieval_precision": null,
+      "answer_keyword_match": null,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately identifies the most recent date range and index score provided in the context and correctly classifies it as 'Elevated'."
+    },
+    {
+      "id": "dyn_xgboost_perf",
+      "category": "dynamic",
+      "question": "Does the XGBoost model currently outperform the naive baseline forecast?",
+      "answer": "Yes, the XGBoost model outperforms the naive baseline forecast. According to the price impact model data, the XGBoost model achieved an RMSE of 5.62166, while the naive baseline achieved an RMSE of 6.65074 [1].\n\nSources:\n[1] Price Model",
+      "n_retrieved": 6,
+      "retrieval_precision": null,
+      "answer_keyword_match": null,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reports the RMSE values for the XGBoost model and the naive baseline as stated in the provided context."
+    },
+    {
+      "id": "dyn_var_perf",
+      "category": "dynamic",
+      "question": "Does the VAR model currently outperform the naive baseline forecast on held-out data?",
+      "answer": "Yes, the VAR model outperforms the naive 'tomorrow=today' baseline forecast on held-out Brent returns data, achieving a RMSE of 4.57276 compared to the baseline's RMSE of 6.61951 [1].\n\nSources:\n[1] Price Model",
+      "n_retrieved": 6,
+      "retrieval_precision": null,
+      "answer_keyword_match": null,
+      "faithful": true,
+      "faithfulness_reasoning": "The answer accurately reflects the RMSE values and performance comparison between the VAR model and the naive baseline as stated in the context."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+.git/
+.env
+mlflow/
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+dbt/profiles.yml
+data/raw/*.csv
+data/processed/*.csv
+data/processed/*.json
+api/hormuz_watch_api.db
+api/__pycache__/
+.pytest_cache/

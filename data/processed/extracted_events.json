@@ -1,0 +1,78 @@
+[
+  {
+    "url": "https://www.thehindubusinessline.com/economy/india-watches-west-asia-escalation-closely-as-tension-spirals/article71218288.ece",
+    "date": "2026-07-13",
+    "title": "India watches West Asia escalation closely as tension spirals",
+    "event_type": "other",
+    "severity_estimate": "Low",
+    "countries": [
+      "India"
+    ],
+    "key_actors": [
+      "Government of India"
+    ],
+    "summary": "India is closely monitoring escalating tensions in West Asia, assessing potential impacts on trade, energy supplies, and shipping routes."
+  },
+  {
+    "url": "https://www.israelnationalnews.com/flashes/689634",
+    "date": "2026-07-13",
+    "title": "Iranian official: Strait of Hormuz is managed according to Iran\u2019s wishes",
+    "event_type": "political_statement",
+    "severity_estimate": "Medium",
+    "countries": [
+      "Iran",
+      "United States"
+    ],
+    "key_actors": [
+      "Al Mayadeen",
+      "Donald Trump"
+    ],
+    "summary": "A senior Iranian security official asserted to Al Mayadeen that the security and management of the Strait of Hormuz are determined by Iran's will rather than US warships or tweets, in response to remarks by US President Donald Trump."
+  },
+  {
+    "url": "https://biztoc.com/x/100c75db55808dbf",
+    "date": "2026-07-13",
+    "title": "Crude Oil Prices Surge as US Reinstates Blockade of Iran",
+    "event_type": "military_action",
+    "severity_estimate": "High",
+    "countries": [
+      "United States",
+      "Iran"
+    ],
+    "key_actors": [
+      "United States Government",
+      "Government of Iran"
+    ],
+    "summary": "Crude oil and gasoline prices surged sharply following the reinstatement of a US blockade on Iran and escalating hostilities over the control of the Strait of Hormuz."
+  },
+  {
+    "url": "https://www.thenation.com/article/world/iran-war-american-decline-suez-crisis-us-foreign-policy-multipolar-world/",
+    "date": "2026-07-13",
+    "title": "Is This the American Suez?",
+    "event_type": "other",
+    "severity_estimate": "Low",
+    "countries": [
+      "United States",
+      "Iran"
+    ],
+    "key_actors": [
+      "Van Gosse",
+      "The Nation"
+    ],
+    "summary": "An opinion piece by Van Gosse in The Nation comparing US foreign policy and tensions with Iran to the Suez Crisis, framing it as a sign of imperial decline."
+  },
+  {
+    "url": "https://www.commondreams.org/news/trump-lying-approval-oil",
+    "date": "2026-07-13",
+    "title": "Lying Trump Says His Approval Is High and Oil Prices Dropping\u2014It\u2019s the Exact Opposite",
+    "event_type": "other",
+    "severity_estimate": "Low",
+    "countries": [
+      "United States of America"
+    ],
+    "key_actors": [
+      "Donald Trump"
+    ],
+    "summary": "Donald Trump claimed in a social media post that his approval rating is at 59 percent and oil prices are dropping, assertions which are disputed as being inaccurate."
+  }
+]

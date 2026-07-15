@@ -1,0 +1,5 @@
+{
+  "var_rmse": 4.57276,
+  "xgboost_rmse": 5.62166,
+  "hri_mean_last_30d": 57.068
+}

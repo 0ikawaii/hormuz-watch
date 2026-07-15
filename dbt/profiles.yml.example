@@ -1,0 +1,41 @@
+# hormuz_watch/dbt/profiles.yml.example
+#
+# dbt needs a DIRECT POSTGRES CONNECTION to your Supabase project — this is
+# different from SUPABASE_URL/SUPABASE_KEY (those are REST API credentials
+# used by ingestion/supabase_sync.py). Get the Postgres connection details
+# from: Supabase dashboard -> Project Settings -> Database -> Connection
+# string (use the "URI" tab, or read the individual host/port/user/password
+# fields shown just above it). Port 5432 = direct connection, 6543 = the
+# pgbouncer connection pooler (Supavisor) — 5432 is simpler for dbt's
+# typically-short-lived connections.
+#
+# Setup:
+#   1. Add these to your hormuz_watch/.env:
+#        SUPABASE_DB_HOST=db.xxxxxxxxxxxx.supabase.co
+#        SUPABASE_DB_PORT=5432
+#        SUPABASE_DB_USER=postgres
+#        SUPABASE_DB_PASSWORD=your-db-password
+#        SUPABASE_DB_NAME=postgres
+#   2. Copy this file to ~/.dbt/profiles.yml (dbt's default lookup location),
+#      OR rename it to profiles.yml and keep it in this dbt/ directory, then
+#      run dbt with --profiles-dir . (this directory's .gitignore already
+#      excludes profiles.yml so a real copy here is never committed).
+#   3. Load .env into your shell before running dbt, e.g.:
+#        pip install "python-dotenv[cli]"
+#        dotenv run -- dbt run
+#      (dbt's env_var() reads process environment variables, not .env
+#      directly.)
+
+hormuz_watch:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('SUPABASE_DB_HOST') }}"
+      port: "{{ env_var('SUPABASE_DB_PORT', '5432') | int }}"
+      user: "{{ env_var('SUPABASE_DB_USER', 'postgres') }}"
+      password: "{{ env_var('SUPABASE_DB_PASSWORD') }}"
+      dbname: "{{ env_var('SUPABASE_DB_NAME', 'postgres') }}"
+      schema: public
+      threads: 4
+      sslmode: require

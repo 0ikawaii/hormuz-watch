@@ -1,0 +1,57 @@
+# hormuz_watch/docker-compose.yml
+#
+# `docker compose up` runs the dashboard, API, and a scheduled ingestion
+# pipeline identically on any machine. Requires a .env file in this
+# directory (copy .env.example -> .env and fill in your keys first).
+#
+#   docker compose up -d          # all three services
+#   docker compose up dashboard   # just the dashboard
+#   docker compose run --rm pipeline python ingestion/run_pipeline.py   # one-shot run
+
+services:
+  dashboard:
+    build: .
+    image: hormuz_watch:latest
+    command: streamlit run dashboard/app.py --server.port=8501 --server.address=0.0.0.0
+    ports:
+      - "8501:8501"
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+      - ./mlflow:/app/mlflow
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  api:
+    build: .
+    image: hormuz_watch:latest
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+      - ./api:/app/api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  pipeline:
+    build: .
+    image: hormuz_watch:latest
+    command: python ingestion/scheduler.py
+    env_file: .env
+    environment:
+      - PIPELINE_SCHEDULE_UTC=06:00
+    volumes:
+      - ./data:/app/data
+      - ./mlflow:/app/mlflow
+      - ./dbt:/app/dbt
+    restart: unless-stopped

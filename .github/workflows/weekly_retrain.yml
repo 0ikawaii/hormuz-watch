@@ -1,0 +1,75 @@
+name: Weekly Model Retrain & Drift Check
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"  # Mondays 08:00 UTC
+  workflow_dispatch:
+    inputs:
+      update_baseline:
+        description: "Overwrite the drift baseline with this run's metrics"
+        type: boolean
+        default: false
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          cd hormuz_watch
+          pip install -r requirements.txt
+
+      - name: Retrain models
+        env:
+          EIA_API_KEY:     ${{ secrets.EIA_API_KEY }}
+          FRED_API_KEY:    ${{ secrets.FRED_API_KEY }}
+          SUPABASE_URL:    ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:    ${{ secrets.SUPABASE_KEY }}
+        run: |
+          cd hormuz_watch
+          python analytics/risk_index.py
+          python analytics/price_model.py
+          python analytics/ml_price_model.py
+
+      - name: Check for model drift
+        id: drift
+        run: |
+          cd hormuz_watch
+          if [ "${{ github.event.inputs.update_baseline }}" = "true" ]; then
+            python analytics/drift_check.py --update-baseline
+          else
+            python analytics/drift_check.py
+          fi
+
+      - name: Commit updated baseline/results
+        if: success()
+        run: |
+          git config --global user.name  "HormuzWatch Bot"
+          git config --global user.email "bot@hormuzwatch.com"
+          cd hormuz_watch
+          git add data/processed/*.json data/processed/*.csv
+          git diff --staged --quiet || git commit -m "chore: weekly model retrain $(date +'%Y-%m-%d')"
+          git push
+
+      - name: Alert on drift
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          cd hormuz_watch
+          python -c "
+          import sys
+          sys.path.insert(0, 'ingestion')
+          from alerts import send_slack_alert
+          send_slack_alert('HormuzWatch weekly retrain/drift check failed — see the Actions run for details.')
+          "

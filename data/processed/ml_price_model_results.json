@@ -1,0 +1,30 @@
+{
+  "model_info": {
+    "model": "XGBoost Regressor",
+    "n_train": 399,
+    "n_test": 99,
+    "features": [
+      "hri_score_lag1",
+      "hri_diff_lag1",
+      "brent_returns_lag1",
+      "hri_score_lag2",
+      "hri_diff_lag2",
+      "brent_returns_lag2",
+      "hri_score_lag3",
+      "hri_diff_lag3",
+      "brent_returns_lag3"
+    ]
+  },
+  "xgboost_rmse": 5.62166,
+  "baseline_rmse": 6.65074,
+  "xgboost_beats_baseline": true,
+  "top_feature_importances": {
+    "brent_returns_lag1": 0.1296,
+    "hri_score_lag2": 0.1256,
+    "hri_score_lag1": 0.1202,
+    "brent_returns_lag3": 0.1174,
+    "hri_diff_lag3": 0.1101
+  },
+  "note": "VAR (price_model.py) forecasts brent_returns from HRI/price dynamics over a rolling horizon; this model predicts next-day returns from explicit lag features. Both RMSEs are on brent_returns %, so comparable in scale, but the two experiments aren't identically designed \u2014 treat as directional evidence for the econometric-vs-ML comparison, not a strict benchmark.",
+  "interpretation": "XGBoost RMSE 5.62166 vs naive-baseline RMSE 6.65074 on next-day Brent returns \u2014 XGBoost outperforms a simple persistence forecast on held-out data."
+}

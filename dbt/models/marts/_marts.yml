@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Calendar date dimension, 2015-01-01 to 2030-12-31."
+    columns:
+      - name: date_day
+        tests: [unique, not_null]
+
+  - name: dim_country
+    description: "Countries tracked by the project, classified gulf_state / importer / other."
+    columns:
+      - name: country_code
+        tests: [unique, not_null]
+      - name: region_role
+        tests:
+          - accepted_values:
+              values: ['gulf_state', 'importer', 'other']
+
+  - name: fact_daily_risk
+    description: "One row per day: Hormuz Risk Index + raw GDELT signal. Incremental on date_day."
+    columns:
+      - name: date_day
+        tests: [unique, not_null]
+      - name: hri_score
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: risk_level
+        tests:
+          - accepted_values:
+              values: ['Low', 'Moderate', 'Elevated', 'High', 'Critical']
+
+  - name: fact_price
+    description: "One row per day: EIA/FRED/Alpha Vantage prices + FX. Incremental on date_day."
+    columns:
+      - name: date_day
+        tests: [unique, not_null]
+      - name: eia_brent_usd
+        tests:
+          - dbt_utils.accepted_range:
+              # min -50 (not 0) so the real April-2020 negative-WTI event
+              # doesn't fail this test — see data_quality_report.json,
+              # which flags the same historical anomaly at the raw layer.
+              min_value: -50
+              max_value: 300
+              inclusive: true
+
+  - name: fact_country_indicator
+    description: "One row per country per year: World Bank macro indicators + Hormuz dependency score."
+    columns:
+      - name: country_code
+        tests: [not_null]
+      - name: year
+        tests: [not_null]
+      - name: pipeline_run_id
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - country_code
+            - year
+
+  - name: lineage_log
+    description: >
+      Governance artifact (Layer 8) — one row per source table showing the
+      latest ingestion run that touched it: source_system, pipeline_run_id,
+      last_fetched_at, rows_in_latest_run. Answers "when was this table last
+      refreshed, by what run, from what source" without querying raw tables
+      directly.
+    columns:
+      - name: table_name
+        tests: [unique, not_null]
+      - name: pipeline_run_id
+        tests: [not_null]

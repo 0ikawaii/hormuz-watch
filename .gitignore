@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+.env
+
+# Local-only state — not shared across machines
+mlflow/
+.pytest_cache/
+api/hormuz_watch_api.db
+
+# dbt/ has its own .gitignore (target/, dbt_packages/, logs/, profiles.yml)
+
+# Supabase CLI local state — machine-specific, not shared
+supabase/.temp/

@@ -1,0 +1,22 @@
+[
+  {"id": "def_hri", "category": "definitional", "question": "What is the Hormuz Risk Index and what does it measure?", "expected_keywords": ["composite", "risk", "Strait of Hormuz"]},
+  {"id": "def_hri_news_weight", "category": "definitional", "question": "What weight does news volume have in the Hormuz Risk Index?", "expected_keywords": ["35"]},
+  {"id": "def_hri_tone_weight", "category": "definitional", "question": "What weight does news tone have in the Hormuz Risk Index?", "expected_keywords": ["25"]},
+  {"id": "def_hri_levels", "category": "definitional", "question": "What are the risk levels used by the Hormuz Risk Index and their score ranges?", "expected_keywords": ["Low", "Moderate", "Elevated", "High", "Critical"]},
+  {"id": "def_var", "category": "definitional", "question": "What does the VAR price impact model measure?", "expected_keywords": ["Vector Autoregression", "Brent"]},
+  {"id": "def_var_validation", "category": "definitional", "question": "How is the VAR model's performance validated?", "expected_keywords": ["out-of-sample", "baseline"]},
+  {"id": "def_granger", "category": "definitional", "question": "What does the Granger causality test check in this project?", "expected_keywords": ["Granger", "predict"]},
+  {"id": "def_xgboost", "category": "definitional", "question": "What machine learning model is used as a comparison to the VAR model?", "expected_keywords": ["XGBoost"]},
+  {"id": "def_choke_states", "category": "definitional", "question": "Which countries are the Strait of Hormuz choke-point states tracked by this project?", "expected_keywords": ["Iran", "Saudi Arabia", "Oman"]},
+  {"id": "def_japan_dependency", "category": "definitional", "question": "Approximately what percentage of Japan's oil imports pass through the Strait of Hormuz?", "expected_keywords": ["87"]},
+  {"id": "def_china_dependency", "category": "definitional", "question": "Approximately what percentage of China's oil imports pass through the Strait of Hormuz?", "expected_keywords": ["40"]},
+  {"id": "def_dependency_score", "category": "definitional", "question": "What factors make up the Hormuz Dependency Score for a country?", "expected_keywords": ["energy import", "fuel import"]},
+  {"id": "hist_fujairah", "category": "historical", "question": "What happened in the Fujairah tanker sabotage event?", "expected_keywords": ["Fujairah", "tanker"]},
+  {"id": "hist_stena", "category": "historical", "question": "What happened to the Stena Impero?", "expected_keywords": ["Stena Impero", "Iran"]},
+  {"id": "hist_abqaiq", "category": "historical", "question": "What was the Abqaiq-Khurais attack and why is it significant?", "expected_keywords": ["Abqaiq", "oil"]},
+  {"id": "hist_soleimani", "category": "historical", "question": "What happened after the Soleimani strike in January 2020?", "expected_keywords": ["Soleimani"]},
+  {"id": "hist_houthi_caveat", "category": "historical", "question": "Is the 2024 Houthi Red Sea shipping attacks escalation considered a Strait of Hormuz event in this project?", "expected_keywords": ["Red Sea", "Bab-el-Mandeb"]},
+  {"id": "dyn_current_hri", "category": "dynamic", "question": "What is the most recent Hormuz Risk Index score and risk level?", "expected_keywords": []},
+  {"id": "dyn_xgboost_perf", "category": "dynamic", "question": "Does the XGBoost model currently outperform the naive baseline forecast?", "expected_keywords": []},
+  {"id": "dyn_var_perf", "category": "dynamic", "question": "Does the VAR model currently outperform the naive baseline forecast on held-out data?", "expected_keywords": []}
+]

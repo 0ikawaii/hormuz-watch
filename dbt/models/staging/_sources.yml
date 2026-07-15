@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: hormuz_watch_raw
+    schema: public
+    description: "Tables written by ingestion/supabase_sync.py — flat, source-shaped, one table per collector/analytics output."
+    tables:
+      - name: oil_prices
+        description: "Daily Brent/WTI spot prices from EIA."
+        loaded_at_field: inserted_at
+      - name: natgas_prices
+        description: "Daily Henry Hub natural gas spot prices from EIA."
+        loaded_at_field: inserted_at
+      - name: gdelt_risk_timeline
+        description: "Daily GDELT event count + tone + risk signal for Hormuz-region actors."
+        loaded_at_field: inserted_at
+      - name: country_indicators
+        description: "World Bank country-year macro indicators + Hormuz dependency score."
+        loaded_at_field: inserted_at
+      - name: fred_indicators
+        description: "FRED daily/monthly economic indicators, forward-filled to daily."
+        loaded_at_field: inserted_at
+      - name: hormuz_risk_index
+        description: "Computed Hormuz Risk Index (HRI), from analytics/risk_index.py."
+        loaded_at_field: inserted_at
+      - name: alphavantage_commodities
+        description: "WTI/Brent/NatGas from Alpha Vantage — independent 2nd price source vs EIA/FRED."
+        loaded_at_field: inserted_at
+      - name: alphavantage_fx
+        description: "USD/JPY and USD/CNY daily FX rates from Alpha Vantage."
+        loaded_at_field: inserted_at

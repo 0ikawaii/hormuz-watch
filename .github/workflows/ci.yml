@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # Curated subset, not the full requirements.txt — the test suite is
+      # pure logic (data_quality, dag, model_validation, api/rate_limit),
+      # it never touches torch/transformers/dbt/streamlit, and installing
+      # those on every push would slow CI down for no reason.
+      - name: Install test dependencies
+        run: |
+          cd hormuz_watch
+          pip install pandas numpy loguru python-dotenv statsmodels scipy \
+                      fastapi python-jose passlib bcrypt python-multipart sqlalchemy \
+                      pytest
+
+      - name: Run tests
+        run: |
+          cd hormuz_watch
+          pytest -v

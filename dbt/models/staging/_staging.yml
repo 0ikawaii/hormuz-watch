@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: stg_oil_prices
+    columns:
+      - name: date_day
+        tests: [not_null, unique]
+      - name: pipeline_run_id
+        tests: [not_null]
+
+  - name: stg_natgas_prices
+    columns:
+      - name: date_day
+        tests: [not_null]
+      - name: pipeline_run_id
+        tests: [not_null]
+
+  - name: stg_gdelt_risk_timeline
+    columns:
+      - name: date_day
+        tests: [not_null, unique]
+      - name: pipeline_run_id
+        tests: [not_null]
+
+  - name: stg_hormuz_risk_index
+    columns:
+      - name: date_day
+        tests: [not_null, unique]
+      - name: hri_score
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+  - name: stg_fred_indicators
+    columns:
+      - name: date_day
+        tests: [not_null, unique]
+      - name: pipeline_run_id
+        tests: [not_null]
+
+  - name: stg_alphavantage_commodities
+    columns:
+      - name: date_day
+        tests: [not_null, unique]
+      - name: pipeline_run_id
+        tests: [not_null]
+
+  - name: stg_alphavantage_fx
+    columns:
+      - name: date_day
+        tests: [not_null, unique]
+      - name: pipeline_run_id
+        tests: [not_null]
+
+  - name: stg_country_indicators
+    columns:
+      - name: country_code
+        tests: [not_null]
+      - name: year
+        tests: [not_null]
+      - name: pipeline_run_id
+        tests: [not_null]

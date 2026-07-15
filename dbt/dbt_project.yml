@@ -1,0 +1,19 @@
+name: 'hormuz_watch'
+version: '1.0.0'
+config-version: 2
+
+profile: 'hormuz_watch'
+
+model-paths: ["models"]
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  hormuz_watch:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
