@@ -199,8 +199,6 @@ def load_lineage_summary():
 # -------------------------------------------------------------------
 
 with st.sidebar:
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Hormuz_strait_en.svg/300px-Hormuz_strait_en.svg.png",
-             use_column_width=True)
     st.title("🛢️ HormuzWatch")
     st.caption("Geopolitical & Economic Risk Monitor")
     st.divider()
